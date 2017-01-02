@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.1.1.js"></script>
+    <script type="text/javascript">
+        function loaddata(){
+            $.ajax(
+                {
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    url: 'http://localhost:2472/api/Announcement',
+                    success: function (data) {
+                        try {
+                            var html = '<table><thead><th>Header</th><th>Body</th><th>Date</th></thead><tbody>';
+                            $.each(data, function (key, val)
+                            {
+                                html += '<tr><td>'
+                                    + val.Header +
+                                    '</td><td>' + val.Body + '</td><td>' + val.Date + '</td></tr>';
+                            });
+                            html += '</tbody></table>';
+                            $('#myGrid').html(html);
+                        }
+                        catch (e)
+                        {
+                            console.log('Error while formatting the data : ' + e.message)
+                        }
+                    },
+                    error: function (xhrequest, error, thrownError)
+                    {
+                        console.log('Error while ajax call: ' + error)
+                    }
+
+                }
+                    );
+
+        };
+
+        $(document).ready(function () {
+            setInterval(function () { loaddata() }, 5000);
+        });
+
+
+    </script>
+</head>
+<body>
+
+    <div id="myGrid"></div>
+
+
+</body>
+</html>
